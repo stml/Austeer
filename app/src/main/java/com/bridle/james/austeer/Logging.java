@@ -29,7 +29,7 @@ public class Logging extends AppCompatActivity {
     TextView timerTextView;
     long startTime = 0;
 
-    private String filename = "Austeer-"+System.currentTimeMillis()+".txt";
+    private String filename = "Austeer-"+System.currentTimeMillis()+".csv";
     private String filepath = "Austeer";
     File envpath;
     File outputFile;

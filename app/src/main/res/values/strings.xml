@@ -5,4 +5,13 @@
     <string name="start_logging">Start Logging</string>
     <string name="stop_logging">Stop Logging</string>
     <string name="logging_text">Logging...</string>
+    <string name="speedKey">Speed (m/s)</string>
+    <string name="steeringKey">Steering Angle</string>
+    <string name="locationKey">Getting Location...</string>
+    <string name="timerKey">00:00</string>
+    <string name="zeroKey">0.0</string>
+    <string name="storageKey">Checking Storage...</string>
+    <string name="storage_writable">Storage is writable</string>
+    <string name="storage_not_writable">Storage is NOT writable</string>
+    <string name="storage_problem">Writing to storage failed</string>
 </resources>

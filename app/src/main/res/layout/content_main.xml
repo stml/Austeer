@@ -13,14 +13,6 @@
     tools:context="com.bridle.james.austeer.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <Button
-        android:text="@string/start_logging"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,5 +20,18 @@
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:layout_above="@+id/button"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="37dp" />
+        android:layout_marginBottom="37dp"
+        android:fontFamily="sans-serif"
+        android:textSize="48sp"
+        android:textStyle="normal|bold" />
+
+    <Button
+        android:text="@string/start_logging"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:layout_marginBottom="93dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp" />
 </RelativeLayout>
