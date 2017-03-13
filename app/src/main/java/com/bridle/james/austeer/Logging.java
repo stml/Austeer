@@ -28,6 +28,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Logging extends AppCompatActivity {
 
@@ -54,6 +56,7 @@ public class Logging extends AppCompatActivity {
     String steerStringY;
     String steerStringZ;
 
+    List<Double> speedlist = new ArrayList();
     Double lastLat;
     Double lastLng;
     Double lastAlt;
@@ -121,7 +124,7 @@ public class Logging extends AppCompatActivity {
         final DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
 
-        final DecimalFormat df2 = new DecimalFormat("#.##");
+        final DecimalFormat df2 = new DecimalFormat("#.#");
         df2.setRoundingMode(RoundingMode.CEILING);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -156,6 +159,10 @@ public class Logging extends AppCompatActivity {
 
                 if (lastLat == null) {
                     speedString = "0";
+                    lastLat = newLat;
+                    lastLng = newLng;
+                    lastAlt = newAlt;
+                    lastTime = newTime;
                 } else {
                     Double dist = distance(lastLat, newLat, lastLng, newLng, newAlt, newAlt);
 
@@ -163,24 +170,29 @@ public class Logging extends AppCompatActivity {
 
                     float timediff = (newTime - lastTime) / 1000;
 
-                    if (dist < accuracy || timediff == 0) {
+                    if (timediff == 0) {
                         // do nothing because distance is less than accuracy
                         // or measurement too quick
                         Log.v(TAG, "SPEED UNCHANGED");
                     } else {
                         Double speed = Math.abs(dist) / timediff;
-                        if (speed < 1) {
-                            speedString = "0";
-                        } else {
-                            speedString = df2.format(Math.abs(speed));
+                        // Average speed from last five position results
+                        speedlist.add(speed);
+                        if (speedlist.size() > 5) {
+                            speedlist.remove(0);
+                            Double averagespeed = averageSpeed(speedlist);
+                            if (averagespeed < 0.5) { averagespeed = 0.0; }
+                            speedString = df2.format(Math.abs(averagespeed));
+                            Log.v(TAG, "SPEEDS = "+speedlist.toString());
                         }
-                        Log.v(TAG, "NEW SPEED = "+speed);
+                        // only update speeds if dist/time is changed
+                        lastLat = newLat;
+                        lastLng = newLng;
+                        lastAlt = newAlt;
+                        lastTime = newTime;
                     }
                 }
-                lastLat = newLat;
-                lastLng = newLng;
-                lastAlt = newAlt;
-                lastTime = newTime;
+
 
             }
 
@@ -225,6 +237,7 @@ public class Logging extends AppCompatActivity {
                 float axisX = event.values[0];
                 float axisY = event.values[1];
                 float axisZ = event.values[2];
+                if (1 / axisY > 0) { } else { axisY = Math.abs(axisY); }
                 steerStringX = Float.toString(Math.round(axisX * 10) / 10);
                 steerStringY = String.format("%.1f", axisY / 10);
                 steerStringZ = Float.toString(Math.round(axisZ * 10) / 10);
@@ -291,6 +304,14 @@ public class Logging extends AppCompatActivity {
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
         return Math.sqrt(distance);
+    }
+
+    public Double averageSpeed(List speeds) {
+        Double total = 0.0;
+        for (int i = 0; i < speeds.size(); i++) {
+            total = total + (double)speeds.get(i);
+        }
+        return (total / speeds.size());
     }
 
 }
