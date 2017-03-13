@@ -157,7 +157,11 @@ public class Logging extends AppCompatActivity {
                 } else {
                     Double dist = distance(lastLat, newLat, lastLng, newLng, newAlt, newAlt);
                     Double speed = Math.abs(dist) / ((newTime - lastTime) / 1000);
-                    speedString = df2.format(Math.abs(speed));
+                    if (speed < 1) {
+                            speedString = "0";
+                    } else {
+                        speedString = df2.format(Math.abs(speed));
+                    }
                     Log.v(TAG, "NEW SPEED = "+speed);
                 }
                 lastLat = newLat;
