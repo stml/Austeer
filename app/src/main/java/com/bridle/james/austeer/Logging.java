@@ -121,6 +121,9 @@ public class Logging extends AppCompatActivity {
         final DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
 
+        final DecimalFormat df2 = new DecimalFormat("#.##");
+        df2.setRoundingMode(RoundingMode.CEILING);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         timerTextView = (TextView) findViewById(R.id.timerTextView);
@@ -150,13 +153,14 @@ public class Logging extends AppCompatActivity {
                     speedString = "0";
                 } else {
                     Double dist = distance(lastLat, newLat, lastLng, newLng, lastAlt, newAlt);
-                    Double speed = dist / ((newTime - lastTime) / 1000);
-                    speedString = df.format(speed);
-                    lastLat = newLat;
-                    lastLng = newLng;
-                    lastAlt = newAlt;
-                    lastTime = newTime;
+                    Double speed = Math.abs(dist) / ((newTime - lastTime) / 1000);
+                    speedString = df2.format(Math.abs(speed));
+                    Log.v(TAG, "NEW SPEED = "+speed);
                 }
+                lastLat = newLat;
+                lastLng = newLng;
+                lastAlt = newAlt;
+                lastTime = newTime;
 
             }
 
