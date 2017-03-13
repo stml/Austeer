@@ -134,9 +134,6 @@ public class Logging extends AppCompatActivity {
         speedTextView = (TextView) findViewById(R.id.speedTextView);
         steeringTextView = (TextView) findViewById(R.id.steeringTextView);
 
-        startTime = System.currentTimeMillis();
-        timerHandler.postDelayed(timerRunnable, 0);
-
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         li = new LocationListener() {
@@ -150,14 +147,17 @@ public class Logging extends AppCompatActivity {
 
                 Float accuracy = location.getAccuracy();
 
-                // Altitude too inaccurate so just use the same altitude fo calculating speed,
+                // Altitude too inaccurate so just use the same altitude for calculating speed,
                 // you're not moving that fast unless you fall off a cliff
 
                 locString = df.format(newLat) + ", " + df.format(newLng);
 
                 Log.v(TAG, "LOCATION CHANGE, lat=" + df.format(newLat) + ", lon=" + df.format(newLng) + "(Accuracy: " + accuracy + ")");
 
+                // on first run set location and start timer
                 if (lastLat == null) {
+                    startTime = System.currentTimeMillis();
+                    timerHandler.postDelayed(timerRunnable, 0);
                     speedString = "0";
                     lastLat = newLat;
                     lastLng = newLng;
@@ -264,8 +264,6 @@ public class Logging extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        sMgr.registerListener(sev, gyro, SensorManager.SENSOR_DELAY_FASTEST);
-        timerHandler.postDelayed(timerRunnable, 0);
     }
 
     public File getAlbumStorageDir(Context context, String albumName) {
