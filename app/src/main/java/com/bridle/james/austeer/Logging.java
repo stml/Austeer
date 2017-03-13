@@ -22,8 +22,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -264,15 +262,6 @@ public class Logging extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    public File getAlbumStorageDir(Context context, String albumName) {
-        File file = new File(context.getExternalFilesDir(
-                Environment.DIRECTORY_PICTURES), albumName);
-        if (!file.mkdirs()) {
-            storageTextView.setText(getString(R.string.storage_problem));
-        }
-        return file;
     }
 
     /**
