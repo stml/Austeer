@@ -145,24 +145,37 @@ public class Logging extends AppCompatActivity {
                 Double newAlt = location.getAltitude();
                 Long newTime = location.getTime();
 
+                Float accuracy = location.getAccuracy();
+
                 // Altitude too inaccurate so just use the same altitude fo calculating speed,
                 // you're not moving that fast unless you fall off a cliff
 
                 locString = df.format(newLat) + ", " + df.format(newLng);
 
-                Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + df.format(newLat) + ", lon=" + df.format(newLng));
+                Log.v(TAG, "LOCATION CHANGE, lat=" + df.format(newLat) + ", lon=" + df.format(newLng) + "(Accuracy: " + accuracy + ")");
 
                 if (lastLat == null) {
                     speedString = "0";
                 } else {
                     Double dist = distance(lastLat, newLat, lastLng, newLng, newAlt, newAlt);
-                    Double speed = Math.abs(dist) / ((newTime - lastTime) / 1000);
-                    if (speed < 1) {
-                            speedString = "0";
+
+                    Log.v(TAG, "DISTANCE = " + dist);
+
+                    float timediff = (newTime - lastTime) / 1000;
+
+                    if (dist < accuracy || timediff == 0) {
+                        // do nothing because distance is less than accuracy
+                        // or measurement too quick
+                        Log.v(TAG, "SPEED UNCHANGED");
                     } else {
-                        speedString = df2.format(Math.abs(speed));
+                        Double speed = Math.abs(dist) / timediff;
+                        if (speed < 1) {
+                            speedString = "0";
+                        } else {
+                            speedString = df2.format(Math.abs(speed));
+                        }
+                        Log.v(TAG, "NEW SPEED = "+speed);
                     }
-                    Log.v(TAG, "NEW SPEED = "+speed);
                 }
                 lastLat = newLat;
                 lastLng = newLng;
