@@ -1,3 +1,5 @@
+<img src="./app/src/main/res/mipmap-xxhdpi/ic_launcher.png">
+
 # Austeer
 
 A simple Android app for tracking movement, speed, and steering angle for self-driving car development using neural network training, to supplement dashcam or other video footage.
