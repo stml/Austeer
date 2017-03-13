@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,8 @@ public class Logging extends AppCompatActivity {
 
     private static final String TAG = "AusteerLogging";
 
-    private String filename = "Austeer-" + System.currentTimeMillis() + ".csv";
+    private String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(System.currentTimeMillis());
+    private String filename = "Austeer-" + timeStamp + ".csv";
     private String filepath = "Austeer";
     File envpath;
     File outputFile;
