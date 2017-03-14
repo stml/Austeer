@@ -237,9 +237,10 @@ public class Logging extends AppCompatActivity {
                 float axisX = event.values[0];
                 float axisY = event.values[1];
                 float axisZ = event.values[2];
-                if (1 / axisY > 0) { } else { axisY = Math.abs(axisY); }
+                // Trying to remove negative zero but doing it wrong.
+//                if (1 / axisY > 0) { } else { axisY = Math.abs(axisY); }
                 steerStringX = Float.toString(Math.round(axisX * 10) / 10);
-                steerStringY = String.format("%.1f", axisY / 10);
+                steerStringY = String.format("%.2f", axisY / 10);
                 steerStringZ = Float.toString(Math.round(axisZ * 10) / 10);
             }
         };
