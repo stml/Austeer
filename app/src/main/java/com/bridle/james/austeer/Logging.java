@@ -51,6 +51,7 @@ public class Logging extends AppCompatActivity {
     TextView storageTextView;
 
     String locString = "";
+    String altitudeString = "";
     String speedString = "";
     String steerStringX;
     String steerStringY;
@@ -86,7 +87,7 @@ public class Logging extends AppCompatActivity {
 
             steeringTextView.setText(steerStringY);
 
-            outputString = String.format("%d:%02d:%02d", minutes, seconds, millis % 1000) + "," + locString + "," + speedString + "," + steerStringY + "\n";
+            outputString = String.format("%d:%02d:%02d", minutes, seconds, millis % 1000) + "," + locString + "," + speedString + "," + steerStringY + "," + altitudeString + "\n";
 
             try {
                 fw.write(outputString);
@@ -145,6 +146,8 @@ public class Logging extends AppCompatActivity {
                 Double newAlt = location.getAltitude();
                 Long newTime = location.getTime();
 
+                altitudeString = Double.toString(newAlt);
+
                 Float accuracy = location.getAccuracy();
 
                 // Altitude too inaccurate so just use the same altitude for calculating speed,
@@ -184,6 +187,7 @@ public class Logging extends AppCompatActivity {
                             if (averagespeed < 0.5) { averagespeed = 0.0; }
                             speedString = df2.format(Math.abs(averagespeed));
                             Log.v(TAG, "SPEEDS = "+speedlist.toString());
+                            Log.v(TAG, "ALTITUDE = "+altitudeString);
                         }
                         // only update speeds if dist/time is changed
                         lastLat = newLat;
